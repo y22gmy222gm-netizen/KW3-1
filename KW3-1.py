@@ -1,3 +1,8 @@
+#
+# streamlit run test1.py
+# https://www.youtube.com/watch?v=6_0_kV08HX8
+# 
+
 import streamlit as st
 import psycopg2
 from google import genai
@@ -15,11 +20,12 @@ st.markdown("""
     <style>
     .ai-answer { color: blue; white-space: pre-wrap; font-size: 11pt; }
     /* 모바일에서 버튼 등이 더 잘 보이도록 조정 */
-    .stChatInput { bottom: 20px !important; }
+    .stChatInput { bottom: 20px; }
     </style>
     """, unsafe_allow_html=True)
 
-# --- 2. 초기 설정 및 세션 상태 관리 ---
+# --- 2. 초기 설정 및 클라이언트 (보안 수정 완료) ---
+# 실제 값은 Streamlit Cloud의 Settings -> Secrets에 넣으세요.
 DB_CONFIG = {
     "host": st.secrets["db_host"],
     "database": st.secrets["db_name"],
@@ -94,11 +100,21 @@ def process_ai_query(user_query):
 # --- 4. 메인 UI 화면 ---
 st.title("강원연구원 AI 테스트 [2026-03-15]")
 
-# 기기 감지 및 안내 (기존 로직 유지)
+# --- [추가] 기기 감지 및 홈 화면 추가 안내 로직 ---
 ua_string = st.context.headers.get("User-Agent", "").lower()
-if "android" in ua_string or "iphone" in ua_string:
-    with st.expander("📱 홈 화면에 추가하여 앱처럼 사용하기"):
-        st.write("메뉴에서 [홈 화면에 추가]를 누르면 바탕화면에서 바로 실행 가능합니다.")
+
+if "android" in ua_string:
+    with st.expander("📱 안드로이드: 이 앱을 홈 화면에 추가하여 사용하세요"):
+        st.write("1. 브라우저 우측 상단 **점 3개(⋮)** 메뉴를 누릅니다.")
+        st.write("2. **[홈 화면에 추가]** 또는 **[앱 설치]**를 선택하세요.")
+        st.write("3. 이제 바탕화면 아이콘을 통해 앱처럼 바로 접속 가능합니다!")
+elif "iphone" in ua_string or "ipad" in ua_string:
+    with st.expander("🍎 아이폰: 이 앱을 홈 화면에 추가하여 사용하세요"):
+        st.write("1. 브라우저 하단 중앙의 **공유 버튼(□↑)**을 누릅니다.")
+        st.write("2. 메뉴를 아래로 내려 **[홈 화면에 추가]**를 선택하세요.")
+        st.write("3. 바탕화면에 아이콘이 생성되어 앱처럼 쓸 수 있습니다!")
+else:
+    st.caption("💡 PC에서 접속 중입니다. 모바일에서도 동일한 주소로 사용 가능합니다.")
 
 # 채팅 기록 출력창
 chat_container = st.container()
@@ -110,26 +126,19 @@ with chat_container:
             else:
                 st.write(msg["content"])
 
-# --- 5. [핵심] 입력창 처리 및 자동 비우기 로직 ---
-# 사용자가 질문을 입력하고 화살표를 누르면 user_input에 값이 담깁니다.
-user_input = st.chat_input("질문을 입력하세요 (강원)")
-
-if user_input:
-    # 1. 질문을 세션에 즉시 추가
+# 입력창
+if user_input := st.chat_input("질문을 입력하세요 (강원)"):
     st.session_state.messages.append({"role": "user", "content": user_input})
-    # 2. 강제 재실행 (이 시점에서 입력창의 글자가 싹 사라집니다)
-    st.rerun()
+    with chat_container:
+        with st.chat_message("user"):
+            st.write(user_input)
 
-# 3. 마지막 메시지가 'user'인 경우에만 AI 답변 생성 시작
-if st.session_state.messages and st.session_state.messages[-1]["role"] == "user":
-    last_query = st.session_state.messages[-1]["content"]
-    
     with chat_container:
         with st.chat_message("assistant"):
             placeholder = st.empty()
             full_response = ""
             
-            result, start_t, is_cache = process_ai_query(last_query)
+            result, start_t, is_cache = process_ai_query(user_input)
             
             if result:
                 if is_cache:
@@ -144,8 +153,5 @@ if st.session_state.messages and st.session_state.messages[-1]["role"] == "user"
                     elapsed_time = time.time() - start_t
                     st.caption(f"총 소요 시간: {elapsed_time:.2f}초")
                 
-                # 답변이 완료되면 세션에 저장 (다음 rerun 때 화면에 유지됨)
+                st.session_state.response_cache[user_input] = full_response
                 st.session_state.messages.append({"role": "assistant", "content": full_response})
-                st.session_state.response_cache[last_query] = full_response
-                # 답변 완료 후 깔끔하게 상태를 확정 짓기 위해 한 번 더 rerun (선택사항)
-                st.rerun()
