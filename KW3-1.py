@@ -18,29 +18,9 @@ st.set_page_config(
 # 답변 글자 파란색 및 모바일 최적화 스타일 적용
 st.markdown("""
 <style>
-    /* 답변 글자 파란색 */
     .ai-answer { color: blue; white-space: pre-wrap; font-size: 11pt; }
-
-    /* 질문창 하단 20px 고정 */
-    div[data-testid="stChatInput"] {
-        bottom: 20px !important;
-    }
-
-    /* 상단 아이콘들은 그냥 두되, '클릭만 안 되게' 처리 (로딩 바는 잘 보임) */
-    header[data-testid="stHeader"] {
-        pointer-events: none !important;
-        background: none !important;
-    }
-    
-    /* 툴바(깃허브 등)는 아주 연하게 해서 시선만 분산 */
-    [data-testid="stToolbar"] {
-        opacity: 0.2 !important;
-    }
-
-    /* 본문 여백 확보 */
-    .main .block-container {
-        padding-bottom: 100px !important;
-    }
+    /* 모바일에서 버튼 등이 더 잘 보이도록 조정 */
+    .stChatInput { bottom: 20px; }
     </style>
     """, unsafe_allow_html=True)
 
