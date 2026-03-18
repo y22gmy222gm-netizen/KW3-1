@@ -27,11 +27,14 @@ st.markdown("""
     /* 2. 답변 글자 스타일 */
     .ai-answer { color: blue; white-space: pre-wrap; font-size: 11pt; }
     
-    /* 3. 기본 UI 요소 제거 */
-    header, footer, #MainMenu { visibility: hidden !important; display: none !important; }
+    /* 3. 기본 UI 요소(헤더, 푸터, 메뉴) 삭제 */
+    header, footer, #MainMenu { 
+        visibility: hidden !important; 
+        display: none !important; 
+    }
     
-    /* 4. [핵심] 로딩 후 나타나는 모든 툴바, 데코레이션, 위젯 강제 제거 */
-    /* data-testid 속성을 가진 모든 하단 관련 요소를 숨깁니다. */
+    /* 4. [특단조치] 하단에 떠다니는 모든 레이어와 버튼 강제 차단 */
+    /* Streamlit이 로딩 후 강제로 넣는 툴바, 데코레이션, 위젯 저격 */
     [data-testid="stStatusWidget"], 
     [data-testid="stToolbar"], 
     [data-testid="stDecoration"],
@@ -39,29 +42,33 @@ st.markdown("""
     .stAppDeployButton {
         display: none !important;
         visibility: hidden !important;
-        height: 0 !important;
-        width: 0 !important;
         opacity: 0 !important;
         pointer-events: none !important;
+        z-index: -1 !important; /* 화면 뒤로 숨김 */
     }
 
-    /* 5. 화면 하단에 떠다니는 모든 버튼/레이어 차단 (채팅 입력창 제외) */
-    /* 아래 코드는 하단 50px 영역에 있는 불필요한 요소를 보이지 않게 합니다. */
-    div[class^="st-emotion-cache"] > div[style*="bottom: 0px"] {
+    /* 5. 화면 하단 바닥에 붙는 모든 컨테이너 숨기기 (채팅창 제외) */
+    /* CSS 선택자 중 '하단 0px'에 고정된 모든 div를 찾아서 숨깁니다. */
+    div[style*="bottom: 0px"], 
+    div[style*="bottom:0px"] {
         display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
     }
     
-    /* 채팅창(stChatInput)은 다시 보이게 설정 */
+    /* 6. 채팅창(stChatInput)은 반드시 보여야 하므로 강제 복구 */
     div[data-testid="stChatInput"] {
         display: flex !important;
         visibility: visible !important;
         opacity: 1 !important;
+        z-index: 999999 !important; /* 채팅창은 맨 앞으로 */
+        position: fixed !important;
+        bottom: 20px !important;
     }
 
-    /* 6. 모바일 화면 최적화 */
-    .stChatInput { bottom: 10px !important; }
+    /* 7. 화면 여백 최적화 */
     .main .block-container {
-        padding-bottom: 1rem !important;
+        padding-bottom: 5rem !important;
         padding-top: 1rem !important;
     }
     </style>
