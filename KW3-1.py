@@ -18,37 +18,39 @@ st.set_page_config(
 # 답변 글자 파란색 및 모바일 최적화 스타일 적용
 st.markdown("""
 <style>
-    /* 1. 기본 헤더와 메뉴 버튼만 숨기기 */
-    /* 로딩 애니메이션을 담고 있는 전체 header를 숨기지 않고 내부 요소만 골라냅니다. */
+    /* 1. 상단 바 배경을 투명하게 해서 공간은 차지하되 안 보이게 함 */
     header[data-testid="stHeader"] {
-        background-color: rgba(0,0,0,0) !important; /* 헤더 배경 투명화 */
+        background-color: rgba(0,0,0,0) !important;
+        color: transparent !important;
     }
     
-    /* 메뉴 버튼과 배포 버튼만 정밀 타격해서 숨김 */
-    [data-testid="stToolbar"], 
-    .stAppDeployButton {
+    /* 2. [중요] 배포 버튼과 메뉴 버튼만 정밀 타격해서 삭제 */
+    .stAppDeployButton, 
+    #MainMenu, 
+    header button {
         display: none !important;
     }
 
-    /* 2. [핵심] 로딩 애니메이션(StatusWidget)은 보이게 유지 */
-    /* 만약 로딩 위젯이 너무 위나 오른쪽에 붙어있다면 위치만 살짝 조정 가능합니다. */
+    /* 3. [핵심] 로딩 애니메이션(StatusWidget) 강제 노출 */
+    /* 다른 게 다 지워져도 이 녀석만큼은 우측 상단에 살아있게 합니다. */
     [data-testid="stStatusWidget"] {
         visibility: visible !important;
         display: flex !important;
         opacity: 1 !important;
-        position: fixed !important;
-        top: 10px !important;
-        right: 20px !important;
         z-index: 999999 !important;
+        background-color: white !important; /* 로딩 바 배경을 흰색으로 해서 잘 보이게 함 */
+        border-radius: 20px !important;
+        padding: 5px 10px !important;
+        box-shadow: 0px 2px 5px rgba(0,0,0,0.1) !important;
     }
 
-    /* 3. 하단 여백은 아까처럼 유지 (아이콘 간섭 방지) */
+    /* 4. 답변 글자 파란색 및 스타일 유지 */
+    .ai-answer { color: blue; white-space: pre-wrap; font-size: 11pt; }
+    
+    /* 5. 하단 아이콘 간섭 방지를 위한 여백 */
     .main .block-container {
         padding-bottom: 120px !important;
     }
-    
-    /* 4. 답변 글자 파란색 유지 */
-    .ai-answer { color: blue; white-space: pre-wrap; font-size: 11pt; }
     </style>
     """, unsafe_allow_html=True)
 
