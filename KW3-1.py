@@ -30,30 +30,26 @@ st.markdown("""
     /* 3. 기본 UI 요소 숨기기 */
     header, footer, #MainMenu { visibility: hidden !important; }
 
-    /* 4. [핵심] 질문창 하단을 흰색으로 꽉 채우는 가림막 설정 */
+    /* 4. [특단조치] 채팅창을 화면 하단에서 완전히 띄우기 */
+    /* bottom 값을 크게 주어 왕관 아이콘들과의 거리를 확실히 벌립니다. */
     div[data-testid="stChatInput"] {
-        bottom: 50px !important; /* 질문창 높이 조절 */
-        z-index: 1000 !important;
-        background-color: white !important; /* 배경을 불투명한 흰색으로 */
-        padding-top: 15px !important;
-        padding-bottom: 100px !important; /* 질문창 아래로 100px만큼 흰색벽을 세움 */
-        margin-bottom: -100px !important; /* 레이아웃 깨짐 방지 */
-        border-top: 1px solid #eeeeee; /* 경계선 추가 */
+        bottom: 120px !important; 
+        z-index: 99999 !important;
+        background-color: white !important;
+        border: 2px solid #f0f2f6 !important;
+        border-radius: 20px !important;
+        box-shadow: 0px -5px 15px rgba(0,0,0,0.05) !important;
     }
 
-    /* 5. 왕관 아이콘 등이 있는 레이어보다 질문창 레이어를 더 높게 설정 */
-    .stApp > header { z-index: 0 !important; }
-    
-    /* 6. 본문 내용이 가려지지 않게 하단 여백 확보 */
+    /* 5. 본문 내용이 채팅창에 가려지지 않게 하단 여백을 대폭 늘림 */
     .main .block-container {
-        padding-bottom: 150px !important;
+        padding-bottom: 250px !important;
     }
-    
-    /* 7. 전송 버튼 색상 강조 */
-    [data-testid="stChatInputSubmit"] {
-        background-color: #FF4B4B !important;
-        color: white !important;
-        border-radius: 8px !important;
+
+    /* 6. 왕관 아이콘들이 위치한 바닥 레이어를 투명하게 시도 */
+    /* 지워지지 않는다면 차라리 그 주변을 비워버립니다. */
+    [data-testid="stStatusWidget"], [data-testid="stToolbar"] {
+        opacity: 0.5 !important; /* 차라리 흐릿하게 만듦 */
     }
     </style>
     """, unsafe_allow_html=True)
