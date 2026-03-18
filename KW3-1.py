@@ -18,38 +18,30 @@ st.set_page_config(
 # 답변 글자 파란색 및 모바일 최적화 스타일 적용
 st.markdown("""
 <style>
-    /* 1. 제목 크기 반응형 */
-    h1 {
-        font-size: clamp(1.1rem, 4.5vw, 2.2rem) !important;
-        word-break: keep-all;
-    }
-
-    /* 2. 답변 글자 스타일 */
+    /* 1. 제목 및 기본 스타일 */
+    h1 { font-size: clamp(1.1rem, 4.5vw, 2.2rem) !important; word-break: keep-all; }
     .ai-answer { color: blue; white-space: pre-wrap; font-size: 11pt; }
     
-    /* 3. 기본 UI 요소 숨기기 */
-    header, footer, #MainMenu { visibility: hidden !important; }
+    /* 2. 상단/하단 기본 UI 완전 제거 시도 */
+    header, footer, #MainMenu { visibility: hidden !important; display: none !important; }
 
-    /* 4. [특단조치] 채팅창을 화면 하단에서 완전히 띄우기 */
-    /* bottom 값을 크게 주어 왕관 아이콘들과의 거리를 확실히 벌립니다. */
+    /* 3. [전략 변경] 채팅 입력창을 바닥에 고정하지 않고 본문 흐름에 배치 */
+    /* 이렇게 하면 하단 아이콘들이 자기 자리를 차지해도 채팅창을 가리지 못합니다. */
     div[data-testid="stChatInput"] {
-        bottom: 120px !important; 
-        z-index: 99999 !important;
-        background-color: white !important;
-        border: 2px solid #f0f2f6 !important;
-        border-radius: 20px !important;
-        box-shadow: 0px -5px 15px rgba(0,0,0,0.05) !important;
+        position: static !important; /* 바닥 고정 해제 */
+        padding-top: 20px !important;
+        padding-bottom: 20px !important;
     }
 
-    /* 5. 본문 내용이 채팅창에 가려지지 않게 하단 여백을 대폭 늘림 */
+    /* 4. 본문 여백 조절 */
     .main .block-container {
-        padding-bottom: 250px !important;
+        padding-bottom: 50px !important;
     }
 
-    /* 6. 왕관 아이콘들이 위치한 바닥 레이어를 투명하게 시도 */
-    /* 지워지지 않는다면 차라리 그 주변을 비워버립니다. */
+    /* 5. 끈질긴 하단 아이콘들 투명화 */
     [data-testid="stStatusWidget"], [data-testid="stToolbar"] {
-        opacity: 0.5 !important; /* 차라리 흐릿하게 만듦 */
+        opacity: 0 !important;
+        pointer-events: none !important;
     }
     </style>
     """, unsafe_allow_html=True)
