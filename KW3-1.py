@@ -18,38 +18,28 @@ st.set_page_config(
 # 답변 글자 파란색 및 모바일 최적화 스타일 적용
 st.markdown("""
 <style>
-    /* 답변 글자 파란색 및 기본 스타일 */
+    /* 답변 글자 파란색 */
     .ai-answer { color: blue; white-space: pre-wrap; font-size: 11pt; }
-    .stChatInput { bottom: 20px !important; }
 
-    /* 1. 상단 헤더 영역의 클릭을 막고 모든 버튼을 흐리게 처리 */
+    /* 질문창 하단 20px 고정 */
+    div[data-testid="stChatInput"] {
+        bottom: 20px !important;
+    }
+
+    /* 상단 아이콘들은 그냥 두되, '클릭만 안 되게' 처리 (로딩 바는 잘 보임) */
     header[data-testid="stHeader"] {
         pointer-events: none !important;
-        background-color: rgba(0,0,0,0) !important;
+        background: none !important;
     }
     
-    /* 포크, 깃허브 아이콘 등 툴바 요소만 아주 흐리게 */
-    [data-testid="stToolbar"], .stAppDeployButton {
-        opacity: 0.05 !important; /* 거의 안 보이게 */
+    /* 툴바(깃허브 등)는 아주 연하게 해서 시선만 분산 */
+    [data-testid="stToolbar"] {
+        opacity: 0.2 !important;
     }
 
-    /* 2. [핵심] 로딩 애니메이션만 다시 100% 진하게 복구 */
-    /* 부모가 흐려도 이 녀석은 자기 주장을 강하게 하도록 설정합니다. */
-    [data-testid="stStatusWidget"] {
-        visibility: visible !important;
-        opacity: 1 !important; /* 투명도 100% 복구 */
-        display: flex !important;
-        pointer-events: none !important; /* 로딩 위젯 자체도 클릭은 안 되게 */
-        
-        /* 위치가 너무 구석이면 아래 수치로 조정 가능 */
-        margin-right: 20px !important;
-        margin-top: 5px !important;
-    }
-    
-    /* 로딩 중일 때 나오는 'Running...' 글자색이 흐리다면 강제로 검정/회색 지정 */
-    [data-testid="stStatusWidget"] div {
-        color: #31333F !important;
-        font-weight: 600 !important;
+    /* 본문 여백 확보 */
+    .main .block-container {
+        padding-bottom: 100px !important;
     }
     </style>
     """, unsafe_allow_html=True)
