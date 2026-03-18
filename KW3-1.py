@@ -17,8 +17,8 @@ st.set_page_config(
 
 # 답변 글자 파란색 및 모바일 최적화 스타일 적용
 st.markdown("""
-  <style>
-    /* 1. 제목 크기 가변 조절 (반응형) */
+ <style>
+    /* 1. 제목 크기 가변 조절 */
     h1 {
         font-size: clamp(1.2rem, 5vw, 2.5rem) !important;
         word-break: keep-all;
@@ -27,24 +27,28 @@ st.markdown("""
     /* 2. 답변 글자 스타일 */
     .ai-answer { color: blue; white-space: pre-wrap; font-size: 11pt; }
     
-    /* 3. 상단 헤더, 우측 메뉴, 하단 푸터 및 아이콘 완전 제거 */
-    header {visibility: hidden !important;}
-    footer {visibility: hidden !important;}
-    #MainMenu {visibility: hidden !important;}
+    /* 3. 상단 헤더, 메뉴, 푸터 완전 제거 */
+    header, footer, #MainMenu {visibility: hidden !important; display: none !important;}
+    
+    /* 4. 우측 하단 관리 아이콘 및 배포 버튼 (모든 클래스 대응) */
     .stAppDeployButton {display:none !important;}
+    [data-testid="stStatusWidget"] {display:none !important;}
     
-    /* 최신 버전 Streamlit 하단 위젯(왕관/아이콘) 숨기기 */
-    div[data-testid="stStatusWidget"] {visibility: hidden !important;}
-    div[class^="st-emotion-cache-1kyx0g3"] {display: none !important;} /* 특정 버전용 캐시 클래스 */
+    /* 5. Streamlit 호스트에서 강제로 넣는 툴바와 도구함 제거 */
+    div[class^="st-emotion-cache-"] button { display: none !important; } /* 모든 버튼 숨기기 (채팅입력 제외) */
+    .stChatInput button { display: inline-flex !important; } /* 채팅 전송 버튼은 다시 살리기 */
     
-    /* 4. 모바일 입력창 위치 및 배경 조정 */
+    /* 하단 툴바 컨테이너 자체를 삭제 */
+    div[data-testid="stToolbar"] { display: none !important; }
+    div[data-testid="stDecoration"] { display: none !important; }
+
+    /* 6. 모바일 입력창 위치 고정 및 하단 여백 최적화 */
     .stChatInput { 
-        bottom: 20px !important; 
+        bottom: 10px !important; 
     }
-    
-    /* 화면 맨 아래 여백 제거 (푸터가 차지하던 공간) */
     .main .block-container {
-        padding-bottom: 3rem !important;
+        padding-bottom: 1rem !important;
+        padding-top: 2rem !important;
     }
     </style>
     """, unsafe_allow_html=True)
