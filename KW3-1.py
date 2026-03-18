@@ -18,7 +18,7 @@ st.set_page_config(
 # 답변 글자 파란색 및 모바일 최적화 스타일 적용
 st.markdown("""
 <style>
-    /* 1. 제목 크기 반응형 (이전보다 조금 더 작게 조절) */
+    /* 1. 제목 크기 반응형 */
     h1 {
         font-size: clamp(1.1rem, 4.5vw, 2.2rem) !important;
         word-break: keep-all;
@@ -27,28 +27,32 @@ st.markdown("""
     /* 2. 답변 글자 스타일 */
     .ai-answer { color: blue; white-space: pre-wrap; font-size: 11pt; }
     
-    /* 3. 상단 헤더 및 기본 메뉴 숨기기 */
+    /* 3. 기본 UI 요소 숨기기 */
     header, footer, #MainMenu { visibility: hidden !important; }
 
-    /* 4. [중요] 채팅 입력창 위치를 왕관 아이콘 위로 강제 이동 */
-    /* 아이콘에 가려지지 않도록 바닥에서 80px 이상 띄웁니다. */
+    /* 4. [핵심] 질문창 하단을 흰색으로 꽉 채우는 가림막 설정 */
     div[data-testid="stChatInput"] {
-        bottom: 90px !important; 
-        z-index: 100 !important;
-        background-color: rgba(255, 255, 255, 0.9) !important; /* 약간 투명한 흰색 배경 */
-        border-radius: 15px !important;
-        padding: 5px !important;
+        bottom: 50px !important; /* 질문창 높이 조절 */
+        z-index: 1000 !important;
+        background-color: white !important; /* 배경을 불투명한 흰색으로 */
+        padding-top: 15px !important;
+        padding-bottom: 100px !important; /* 질문창 아래로 100px만큼 흰색벽을 세움 */
+        margin-bottom: -100px !important; /* 레이아웃 깨짐 방지 */
+        border-top: 1px solid #eeeeee; /* 경계선 추가 */
     }
 
-    /* 5. 본문 내용이 입력창에 가려지지 않게 하단 여백 확보 */
+    /* 5. 왕관 아이콘 등이 있는 레이어보다 질문창 레이어를 더 높게 설정 */
+    .stApp > header { z-index: 0 !important; }
+    
+    /* 6. 본문 내용이 가려지지 않게 하단 여백 확보 */
     .main .block-container {
-        padding-bottom: 180px !important;
+        padding-bottom: 150px !important;
     }
     
-    /* 6. 모바일에서 전송 버튼이 잘 보이도록 설정 */
+    /* 7. 전송 버튼 색상 강조 */
     [data-testid="stChatInputSubmit"] {
-        color: white !important;
         background-color: #FF4B4B !important;
+        color: white !important;
         border-radius: 8px !important;
     }
     </style>
