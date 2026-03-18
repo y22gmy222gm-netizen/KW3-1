@@ -98,7 +98,7 @@ def process_ai_query(user_query):
         return None, 0, False
 
 # --- 4. 메인 UI 화면 ---
-st.title("강원연구원 AI 테스트 [2026-03-15]")
+st.title("강원연구원AI")
 
 # --- [추가] 기기 감지 및 홈 화면 추가 안내 로직 ---
 ua_string = st.context.headers.get("User-Agent", "").lower()
