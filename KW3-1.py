@@ -17,9 +17,17 @@ st.set_page_config(
 
 # 답변 글자 파란색 및 모바일 최적화 스타일 적용
 st.markdown("""
-    <style>
+   <style>
+    /* 답변 글자 스타일 */
     .ai-answer { color: blue; white-space: pre-wrap; font-size: 11pt; }
-    /* 모바일에서 버튼 등이 더 잘 보이도록 조정 */
+    
+    /* 우측 하단 관리 메뉴 및 로고 숨기기 */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    .stAppDeployButton {display:none;}
+    
+    /* 모바일 입력창 위치 조정 */
     .stChatInput { bottom: 20px; }
     </style>
     """, unsafe_allow_html=True)
