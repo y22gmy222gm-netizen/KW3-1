@@ -18,28 +18,38 @@ st.set_page_config(
 # 답변 글자 파란색 및 모바일 최적화 스타일 적용
 st.markdown("""
 <style>
-    /* 답변 글자 파란색 스타일 */
+    /* 답변 글자 파란색 및 기본 스타일 */
     .ai-answer { color: blue; white-space: pre-wrap; font-size: 11pt; }
-
-    /* 모바일 최적화: 질문창 위치 */
     .stChatInput { bottom: 20px !important; }
 
-    /* [핵심] 상단 도구 모음(GitHub, Fork, Menu) 무력화 */
-    /* 1. 클릭이 안 되게 막고, 2. 투명도를 낮춰서 시선을 분산시킵니다. */
+    /* 1. 상단 헤더 영역의 클릭을 막고 모든 버튼을 흐리게 처리 */
     header[data-testid="stHeader"] {
-        pointer-events: none !important; /* 이 영역의 모든 클릭/터치 차단 */
-        background-color: rgba(255, 255, 255, 0) !important; /* 배경은 투명하게 */
+        pointer-events: none !important;
+        background-color: rgba(0,0,0,0) !important;
+    }
+    
+    /* 포크, 깃허브 아이콘 등 툴바 요소만 아주 흐리게 */
+    [data-testid="stToolbar"], .stAppDeployButton {
+        opacity: 0.05 !important; /* 거의 안 보이게 */
     }
 
-    /* 3. 하지만 '로딩 애니메이션'은 클릭할 일이 없으므로 이 설정에서도 잘 보입니다. */
+    /* 2. [핵심] 로딩 애니메이션만 다시 100% 진하게 복구 */
+    /* 부모가 흐려도 이 녀석은 자기 주장을 강하게 하도록 설정합니다. */
     [data-testid="stStatusWidget"] {
         visibility: visible !important;
-        opacity: 1 !important;
+        opacity: 1 !important; /* 투명도 100% 복구 */
+        display: flex !important;
+        pointer-events: none !important; /* 로딩 위젯 자체도 클릭은 안 되게 */
+        
+        /* 위치가 너무 구석이면 아래 수치로 조정 가능 */
+        margin-right: 20px !important;
+        margin-top: 5px !important;
     }
-
-    /* 관리자 버튼들(Deploy, GitHub 등)을 더 희미하게 만들고 싶다면 아래 추가 */
-    .stAppDeployButton, [data-testid="stToolbar"] {
-        opacity: 0.1 !important; /* 거의 안 보이게 흐릿하게 처리 */
+    
+    /* 로딩 중일 때 나오는 'Running...' 글자색이 흐리다면 강제로 검정/회색 지정 */
+    [data-testid="stStatusWidget"] div {
+        color: #31333F !important;
+        font-weight: 600 !important;
     }
     </style>
     """, unsafe_allow_html=True)
