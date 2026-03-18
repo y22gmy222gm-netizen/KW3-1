@@ -10,7 +10,7 @@ import time
 
 # --- 1. 앱 설정 및 스타일 ---
 st.set_page_config(
-    page_title="강원연구원 AI 테스트 [2026-03-15]",
+    page_title="강원연구원AI",
     page_icon="🤖",
     layout="wide"
 )
