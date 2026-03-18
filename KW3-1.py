@@ -17,40 +17,10 @@ st.set_page_config(
 
 # 답변 글자 파란색 및 모바일 최적화 스타일 적용
 st.markdown("""
-<style>
-    /* 1. 상단 바 배경을 투명하게 해서 공간은 차지하되 안 보이게 함 */
-    header[data-testid="stHeader"] {
-        background-color: rgba(0,0,0,0) !important;
-        color: transparent !important;
-    }
-    
-    /* 2. [중요] 배포 버튼과 메뉴 버튼만 정밀 타격해서 삭제 */
-    .stAppDeployButton, 
-    #MainMenu, 
-    header button {
-        display: none !important;
-    }
-
-    /* 3. [핵심] 로딩 애니메이션(StatusWidget) 강제 노출 */
-    /* 다른 게 다 지워져도 이 녀석만큼은 우측 상단에 살아있게 합니다. */
-    [data-testid="stStatusWidget"] {
-        visibility: visible !important;
-        display: flex !important;
-        opacity: 1 !important;
-        z-index: 999999 !important;
-        background-color: white !important; /* 로딩 바 배경을 흰색으로 해서 잘 보이게 함 */
-        border-radius: 20px !important;
-        padding: 5px 10px !important;
-        box-shadow: 0px 2px 5px rgba(0,0,0,0.1) !important;
-    }
-
-    /* 4. 답변 글자 파란색 및 스타일 유지 */
+ <style>
     .ai-answer { color: blue; white-space: pre-wrap; font-size: 11pt; }
-    
-    /* 5. 하단 아이콘 간섭 방지를 위한 여백 */
-    .main .block-container {
-        padding-bottom: 120px !important;
-    }
+    /* 모바일에서 버튼 등이 더 잘 보이도록 조정 */
+    .stChatInput { bottom: 20px; }
     </style>
     """, unsafe_allow_html=True)
 
