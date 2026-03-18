@@ -17,7 +17,7 @@ st.set_page_config(
 
 # 답변 글자 파란색 및 모바일 최적화 스타일 적용
 st.markdown("""
- <style>
+<style>
     /* 1. 제목 크기 반응형 조절 */
     h1 {
         font-size: clamp(1.2rem, 5vw, 2.5rem) !important;
@@ -27,31 +27,41 @@ st.markdown("""
     /* 2. 답변 글자 스타일 */
     .ai-answer { color: blue; white-space: pre-wrap; font-size: 11pt; }
     
-    /* 3. 상단 헤더, 메뉴, 푸터 완전 제거 */
-    header, footer, #MainMenu {visibility: hidden !important; display: none !important;}
+    /* 3. 기본 UI 요소 제거 */
+    header, footer, #MainMenu { visibility: hidden !important; display: none !important; }
     
-    /* 4. 하단 툴바 및 위젯 (왕관, 관리 메뉴 등) 완전 삭제 */
-    /* 아래 요소들이 중앙에서 우측으로 이동하는 주범들입니다. */
+    /* 4. [핵심] 로딩 후 나타나는 모든 툴바, 데코레이션, 위젯 강제 제거 */
+    /* data-testid 속성을 가진 모든 하단 관련 요소를 숨깁니다. */
     [data-testid="stStatusWidget"], 
     [data-testid="stToolbar"], 
     [data-testid="stDecoration"],
+    [data-testid="stConnectionStatus"],
     .stAppDeployButton {
         display: none !important;
         visibility: hidden !important;
+        height: 0 !important;
+        width: 0 !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
     }
 
-    /* 5. Streamlit 호스트 오버레이 버튼들 강제 제거 */
-    /* 클래스 이름이 랜덤으로 변해도 위치(하단)를 기준으로 저격합니다. */
-    div[class^="st-emotion-cache"] button:not([data-testid="stChatInputSubmit"]) {
+    /* 5. 화면 하단에 떠다니는 모든 버튼/레이어 차단 (채팅 입력창 제외) */
+    /* 아래 코드는 하단 50px 영역에 있는 불필요한 요소를 보이지 않게 합니다. */
+    div[class^="st-emotion-cache"] > div[style*="bottom: 0px"] {
         display: none !important;
     }
-
-    /* 6. 모바일 입력창 위치 및 화면 여백 최적화 */
-    .stChatInput { 
-        bottom: 15px !important; 
+    
+    /* 채팅창(stChatInput)은 다시 보이게 설정 */
+    div[data-testid="stChatInput"] {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
     }
+
+    /* 6. 모바일 화면 최적화 */
+    .stChatInput { bottom: 10px !important; }
     .main .block-container {
-        padding-bottom: 2rem !important;
+        padding-bottom: 1rem !important;
         padding-top: 1rem !important;
     }
     </style>
